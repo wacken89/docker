@@ -77,7 +77,9 @@ EOF
 
 chown root:named /etc/named.conf
 cat /etc/named.conf
-echo "Checking zones"
+echo "Creating empy zone file"
+touch /etc/named/zones
+echo "Checking named config"
 named-checkconf
 
 echo "Starting named"
