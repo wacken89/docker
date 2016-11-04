@@ -1,4 +1,4 @@
-server:
+named:
   build: .
   environment:
     - SERVER_IP=any;
@@ -10,3 +10,4 @@ server:
   ports:
     - 53:53/udp
     - 127.0.0.1:953:953
+  container_name: named
