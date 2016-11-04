@@ -1,0 +1,12 @@
+server:
+  build: .
+  environment:
+    - SERVER_IP=any;
+    - SECONDARY=no
+    - SECONDARY_IPS=
+  volumes:
+    - /docker_storage/bind/conf:/etc/named/
+    - /docker_storage/bind/zones:/var/named/master
+  ports:
+    - 53:53/udp
+    - 127.0.0.1:953:953
