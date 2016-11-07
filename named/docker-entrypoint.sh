@@ -2,8 +2,10 @@
 set -eo pipefail
 shopt -s nullglob
 
+########## Functions
 
-echo "Chenking master or secondary"
+function named_conf {
+echo "Checking master or secondary"
 if [[ "${SECONDARY}" == "no" ]]; then
 echo "Master"
 IPS=() 
@@ -74,13 +76,83 @@ include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
 include "/etc/named/zones";
 EOF
+}
 
-chown root:named /etc/named.conf
-cat /etc/named.conf
-echo "Creating empy zone file"
+
+function zone_config_file {
+echo "Creating config zone file"
 touch /etc/named/zones
-echo "Checking named config"
-named-checkconf
+if [[ "${SECONDARY}" == "no" ]];then
+for ZONE in ${ZONES} ; do
+echo "Adding zone ${ZONE} to /etc/named/zones"
+cat <<EOF >> /etc/named/zones
+zone "${ZONE}" {
+        type master;
+        file "/var/named/master/${ZONE}";
+};
+EOF
+echo "Creating zone file for domain ${ZONE}"
+cat <<EOF > /var/named/master/${ZONE}
+$TTL    3600
+@ IN  SOA     ns.${ZONE}. hostmaster.${ZONE}. (
+                                2016012700  ; Serial
+                                28800           ; Refresh
+                                7200            ; Retry
+                                604800          ; Expire
+                                3600 )         ; Default Minimum TTL
 
+    IN  NS ns.${ZONE}
+EOF
+done
+else
+for ZONE in ${ZONES} ; do
+if [[ "${SECONDARY}" == "no" ]]; then
+cat <<EOF >> /etc/named/zones
+zone "${ZONE}" {
+        type master;
+        file "/var/named/master/${ZONE}";
+};
+EOF
+elif [[ "${SECONDARY}" == "yes" ]]; then
+cat <<EOF >> /etc/named/zones
+zone "${ZONE}" {
+        type slave;
+        file "/var/named/master/${ZONE}";
+        masters { ${MASTER_IPS} };
+};
+EOF
+fi
+done
+fi
+}
+
+function named_chown { 
+mkdir -p /var/named/master
+chown named:named /etc/named/zones
+chown -R named:named /var/named/master
+cat /etc/named.conf
+}
+
+function checkconf {
+echo "Checking named config"
+named-checkconf 
+}
+
+function starting_named {
 echo "Starting named"
 /usr/sbin/named -u named -f
+}
+
+
+############# Exec functions
+
+named_conf
+chown root:named /etc/named.conf
+if [[ ! -f /etc/named/zones ]]; then
+zone_config_file
+named_chown
+else
+  echo "Config zone file exists"
+fi
+checkconf
+starting_named
