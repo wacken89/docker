@@ -5,7 +5,9 @@ case "${1}" in
 		;;
 	--run | -r ) docker run -d -P -t ${IMAGE_NAME}
         ;;
-    --help | -h ) printf "usage: ${0} [arg]\n--build,-b\tBuild image\n--run,-r\tRun\n"
+	--push| -p ) docker push ${IMAGE_NAME}
+	;;
+    --help | -h ) printf "usage: ${0} [arg]\n--build,-b\tBuild image\n--run,-r\tRun\n--push,-p\tpush image\n"
 		;;
 	* ) printf "Print ${0} --help for help\n"
 		;;
