@@ -1,5 +1,5 @@
 named:
-  build: .
+  image: wacken/named
   environment:
     - SERVER_IP=any;
     - SECONDARY=yes
