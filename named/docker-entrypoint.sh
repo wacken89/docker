@@ -4,6 +4,7 @@ shopt -s nullglob
 
 ########## Functions
 
+CONT_IP=`cat /etc/hosts |grep \`hostname\`|awk '{print $1}'`
 function named_conf {
 echo "Checking master or secondary"
 if [[ "${SECONDARY}" == "no" ]]; then
@@ -92,16 +93,17 @@ zone "${ZONE}" {
 };
 EOF
 echo "Creating zone file for domain ${ZONE}"
-cat <<EOF > /var/named/master/${ZONE}
-$TTL    3600
+echo '$TTL    3600' > /var/named/master/${ZONE}
+cat <<EOF >> /var/named/master/${ZONE}
 @ IN  SOA     ns.${ZONE}. hostmaster.${ZONE}. (
                                 2016012700  ; Serial
                                 28800           ; Refresh
                                 7200            ; Retry
                                 604800          ; Expire
                                 3600 )         ; Default Minimum TTL
-
-    IN  NS ns.${ZONE}
+          IN    NS ns.${ZONE}.    
+test      A     192.168.1.1
+ns        A     ${CONT_IP}
 EOF
 done
 else

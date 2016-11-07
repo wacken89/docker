@@ -2,7 +2,7 @@ named:
   image: wacken/named
   environment:
     - SERVER_IP=any;
-    - SECONDARY=yes
+    - SECONDARY=no
     - SECONDARY_IPS=
     - MASTER_IPS=127.0.0.1;
     - ZONES=example.com
