@@ -8,11 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''echo "import pty; pty.spawn('/bin/bash')" > /tmp/asdf.py
-python /tmp/asdf.py
-
-su - root
-sudo apt-get install mc
+        sh '''su - root
 sudo service postgresql start'''
       }
     }
