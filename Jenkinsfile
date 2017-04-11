@@ -8,19 +8,10 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        parallel(
-          "Build": {
-            sh 'ls'
-            sh 'apt-get update'
-            sh 'apt-get install java-jdk8'
-            
-          },
-          "second build": {
-            echo 'hello'
-            sh 'env'
-            
-          }
-        )
+        sh '''env
+uname -a'''
+        sh 'sudo apt-get update'
+        sh 'sudo apt-get install -y java-jdk8 mc'
       }
     }
     stage('build third parties') {
