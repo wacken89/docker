@@ -6,22 +6,23 @@ pipeline {
     
   }
   stages {
-    stage('') {
+    stage('Build') {
       steps {
         parallel(
-          "Show ENV": {
-            sh 'env'
+          "Build": {
+            sh 'ls'
             
           },
-          "Say Hi": {
-            sh 'echo \'Hello World\''
-            
-          },
-          "Something": {
-            echo 'That\'s all'
+          "": {
+            echo 'hello'
             
           }
         )
+      }
+    }
+    stage('build third parties') {
+      steps {
+        sh 'echo \'Hello\''
       }
     }
   }
