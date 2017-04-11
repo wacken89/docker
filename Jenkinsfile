@@ -8,7 +8,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''sudo apt-get install mc
+        sh '''su - root
+sudo apt-get install mc
 sudo service postgresql start'''
       }
     }
