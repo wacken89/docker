@@ -8,9 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'sh fix.sh'
-        sh '''su - root
-sudo service postgresql start'''
+        sh 'cat /etc/sudoers'
       }
     }
     stage('build third parties') {
