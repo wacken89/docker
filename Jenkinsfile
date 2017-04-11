@@ -1,17 +1,15 @@
 pipeline {
   agent {
     docker {
-      image 'postgres'
+      image 'kruschecompany/base-jdk8-postgres-nodejs'
     }
     
   }
   stages {
     stage('Build') {
       steps {
-        sh '''env
-uname -a'''
-        sh 'sudo apt-get update'
-        sh 'sudo apt-get install -y java-jdk8 mc'
+        sh 'service postgresql start'
+        sh 'apt-get install mc'
       }
     }
     stage('build third parties') {
@@ -19,9 +17,5 @@ uname -a'''
         sh 'echo \'Hello\''
       }
     }
-  }
-  environment {
-    POSTGRES_USER = 'go'
-    POSTGRES_DB = 'go'
   }
 }
