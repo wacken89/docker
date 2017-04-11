@@ -8,8 +8,8 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''apt-get install mc
-service postgresql start'''
+        sh '''sudo apt-get install mc
+sudo service postgresql start'''
       }
     }
     stage('build third parties') {
