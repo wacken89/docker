@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'kruschecompany/base-jdk8-postgres-nodejs'
+      image 'postgres'
     }
     
   }
@@ -11,6 +11,8 @@ pipeline {
         parallel(
           "Build": {
             sh 'ls'
+            sh 'apt-get update'
+            sh 'apt-get install java-jdk8'
             
           },
           "second build": {
@@ -26,5 +28,9 @@ pipeline {
         sh 'echo \'Hello\''
       }
     }
+  }
+  environment {
+    POSTGRES_USER = 'go'
+    POSTGRES_DB = 'go'
   }
 }
