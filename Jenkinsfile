@@ -13,8 +13,9 @@ pipeline {
             sh 'ls'
             
           },
-          "": {
+          "second build": {
             echo 'hello'
+            sh 'env'
             
           }
         )
