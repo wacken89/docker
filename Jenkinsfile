@@ -6,9 +6,22 @@ pipeline {
     
   }
   stages {
-    stage('starting project') {
+    stage('') {
       steps {
-        sh 'echo "Hello World"'
+        parallel(
+          "Show ENV": {
+            sh 'env'
+            
+          },
+          "Say Hi": {
+            sh 'echo \'Hello World\''
+            
+          },
+          "Something": {
+            echo 'That\'s all'
+            
+          }
+        )
       }
     }
   }
