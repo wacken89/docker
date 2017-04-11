@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh '''whoami
+        sh '''su - root
 service postgresql start'''
         sh 'apt-get install mc'
       }
