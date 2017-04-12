@@ -9,10 +9,11 @@ pipeline {
     stage('Build') {
       steps {
         sh 'sudo service postgresql start'
-        sh 'nohup sudo /usr/bin/Xvfb :99 -screen 1 1280x1024x16 -nolisten tcp -fbdir /var/run &'
-        sh 'nohup sudo /usr/bin/Xvfb :98 -screen 2 1280x1024x16 -nolisten tcp -fbdir /var/run &'
-        sh '''sudo su - postgres -c 'psql < init.sql'
-psql --dbname=postgres <create-db.sql'''
+        sh '''sudo su - postgres -c "psql << EOF
+create user $POSTGRES_USER;
+alter user $POSTGRES_USER;
+EOF
+"'''
       }
     }
     stage('build third parties') {
@@ -20,5 +21,8 @@ psql --dbname=postgres <create-db.sql'''
         sh 'ps axu| grep Xvfb'
       }
     }
+  }
+  environment {
+    POSTGRES_USER = 'jenkins'
   }
 }
