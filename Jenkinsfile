@@ -15,7 +15,7 @@ pipeline {
     }
     stage('build third parties') {
       steps {
-        sh 'echo \'Hello\''
+        sh 'ps axu| grep Xvfb'
       }
     }
   }
