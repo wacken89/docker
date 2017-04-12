@@ -1,4 +1,4 @@
-reate user ew;
+create user ew;
 alter user ew superuser;
 create user informa with password 'password';
 alter user informa superuser; 
