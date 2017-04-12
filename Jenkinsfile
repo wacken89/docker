@@ -9,6 +9,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'sudo service postgresql start'
+        sh 'ps axu'
       }
     }
     stage('build third parties') {
