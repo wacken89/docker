@@ -11,7 +11,7 @@ pipeline {
         sh 'sudo service postgresql start'
         sh '''sudo su - postgres -c "psql << EOF
 create user $POSTGRES_USER;
-alter user $POSTGRES_USER;
+alter user $POSTGRES_USER superuser;
 EOF
 "'''
       }
